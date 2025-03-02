@@ -3,13 +3,13 @@ from PIL import Image, ImageDraw, ImageFont
 import io
 import arabic_reshaper
 from bidi.algorithm import get_display
+import os
 
 st.set_page_config(
     page_title="Eid Images Generator",
     layout="wide",
     initial_sidebar_state="expanded",
     page_icon="🎉",
-
 )
 
 with st.sidebar:
@@ -22,30 +22,28 @@ def create_image_with_name(name, template_path="./template.jpg"):
     img = Image.open(template_path)
     draw = ImageDraw.Draw(img)
 
-    # Reshape Arabic text for proper rendering
+    # Reshape and fix Arabic text direction
     reshaped_text = arabic_reshaper.reshape(name)
-    bidi_text = get_display(reshaped_text)  # Fix right-to-left order
+    bidi_text = get_display(reshaped_text)
 
-    # Try to use a TrueType font that supports Arabic
+    # Load custom Arabic font
+    font_path = os.path.join("fonts", "Amiri-Regular.ttf")  # Ensure this file exists!
     try:
-        font = ImageFont.truetype("arial.ttf", size=30)  # Change font if needed
+        font = ImageFont.truetype(font_path, size=40)
     except IOError:
-        font = ImageFont.load_default()
-    
-    # Calculate text dimensions
-    try:
-        bbox = draw.textbbox((0, 0), bidi_text, font=font)
-        text_width = bbox[2] - bbox[0]
-        text_height = bbox[3] - bbox[1]
-    except AttributeError:
-        text_width, text_height = draw.textsize(bidi_text, font=font)
+        font = ImageFont.load_default()  # Fallback, but won't support Arabic
 
-    # Calculate position to center the text
+    # Get text size
+    bbox = draw.textbbox((0, 0), bidi_text, font=font)
+    text_width = bbox[2] - bbox[0]
+    text_height = bbox[3] - bbox[1]
+
+    # Center text on the image
     img_width, img_height = img.size
     x = (img_width - text_width) / 2
     y = (img_height - text_height) / 2
 
-    # Draw the name on the image
+    # Draw text on the image
     draw.text((x, y), bidi_text, font=font, fill="black")
 
     return img
