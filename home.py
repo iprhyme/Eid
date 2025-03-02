@@ -8,6 +8,8 @@ st.set_page_config(
     page_title="Eid Images Generator",
     layout="wide",
     initial_sidebar_state="expanded",
+    page_icon="🎉",
+
 )
 
 with st.sidebar:
