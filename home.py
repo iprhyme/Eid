@@ -17,7 +17,7 @@ with st.sidebar:
 
 st.title("Eid Images Generator! 🎉")
 
-def create_image_with_name(name, template_path="./template.jpg"):
+def create_image_with_name(name, template_path="./Moneymoon-Ramadan.jpg"):
     # Open the template image
     img = Image.open(template_path)
     draw = ImageDraw.Draw(img)
@@ -29,7 +29,7 @@ def create_image_with_name(name, template_path="./template.jpg"):
     # Load custom Arabic font
     font_path = os.path.join("fonts", "Amiri-Regular.ttf")  # Ensure this file exists!
     try:
-        font = ImageFont.truetype(font_path, size=40)
+        font = ImageFont.truetype(font_path, size=80)
     except IOError:
         font = ImageFont.load_default()  # Fallback, but won't support Arabic
 
@@ -44,7 +44,7 @@ def create_image_with_name(name, template_path="./template.jpg"):
     y = (img_height - text_height) / 2
 
     # Draw text on the image
-    draw.text((x, y), bidi_text, font=font, fill="black")
+    draw.text((x, y-100), bidi_text, font=font, fill="#008afe")
 
     return img
 
