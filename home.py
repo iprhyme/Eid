@@ -6,7 +6,7 @@ from bidi.algorithm import get_display
 import os
 
 st.set_page_config(
-    page_title="MoneyMoon Eid Images",
+    page_title="Moneymoon Eid Images",
     layout="wide",
     initial_sidebar_state="expanded",
     page_icon="🌙",
@@ -51,8 +51,8 @@ inject_custom_css()
 # Define translations
 translations = {
     "English": {
-        "title": "MoneyMoon Eid Images! 🎉",
-        "sidebar_text": "Developed by MoneyMoon's team",
+        "title": "Moneymoon Eid Images! 🎉",
+        "sidebar_text": "Developed by Moneymoon's team",
         "greeting": "Moneymoon family wishes you a happy Eid Al-Fitr! Please type your name and click the button to get your Eid Al-Fitr 2025 greeting card!",
         "name_label": "Name:",
         "generate_button": "Generate Eid Image",
