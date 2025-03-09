@@ -12,6 +12,28 @@ st.set_page_config(
     page_icon="🌙",
 )
 
+# Inject Custom CSS for RTL Support
+def inject_custom_css():
+    rtl_css = """
+    <style>
+        body {
+            direction: rtl;
+            text-align: right;
+        }
+        .stButton > button {
+            float: left;  /* Ensures button stays on the left side for Arabic */
+        }
+        .stTextInput > div > div > input {
+            text-align: right;
+        }
+        .stTitle, .stHeader, .stMarkdown {
+            text-align: right;
+        }
+    </style>
+    """
+    if st.session_state.language == "Arabic":
+        st.markdown(rtl_css, unsafe_allow_html=True)
+
 # Initialize session state for language
 if "language" not in st.session_state:
     st.session_state.language = "English"
@@ -23,7 +45,8 @@ def toggle_language():
     else:
         st.session_state.language = "English"
 
-
+# Inject RTL CSS
+inject_custom_css()
 
 # Define translations
 translations = {
@@ -37,13 +60,13 @@ translations = {
         "download": "Download the Image!",
     },
     "Arabic": {
-        "title": "🎉!عيد موني مون ",
+        "title": "عيد موني مون!🎉 ",
         "sidebar_text": "تم التطوير بواسطة فريق موني مون",
         "greeting": "عائلة موني مون تتمنى لكم عيد فطر سعيد! يرجى كتابة اسمك والضغط على الزر للحصول على بطاقة تهنئة عيد الفطر",
-        "name_label": ":الاسم",
+        "name_label": "الاسم:",
         "generate_button": "إنشاء بطاقة التهنئة",
         "caption": "صورتك للعيد",
-        "download": "!تحميل الصورة",
+        "download": "تحميل الصورة!",
     }
 }
 
@@ -51,15 +74,19 @@ translations = {
 lang = st.session_state.language
 texts = translations[lang]
 
+# Sidebar
 with st.sidebar:
     st.image("./MM-LOGO.png")
-    # Language toggle button using session state
     st.button(
         "عربي" if st.session_state.language == "English" else "EN",
         key="lang_toggle",
         on_click=toggle_language
     )
-    st.sidebar.write(texts["sidebar_text"])
+    st.markdown(
+        f"<div style='text-align: {'right' if st.session_state.language == 'Arabic' else 'left'};'>"
+        f"{texts['sidebar_text']}</div>",
+        unsafe_allow_html=True
+    )
 
 st.title(texts["title"])
 
